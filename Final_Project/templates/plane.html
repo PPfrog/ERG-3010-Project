@@ -1,0 +1,18 @@
+{% extends "template.html" %}
+{% block content %}
+<span class="ctr-p">
+    <center>
+        <div id="main" style="width:400px;height:300px;margin-top:100px">
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                <div>
+                    <img src="{{url_for('static', filename='assets/img/787-8.svg')}}" width="100">
+                    <h1>{{ form.plane_id.label() }}</h1>
+                    {{ form.plane_id(class="form-control", style  = "border:none;border-bottom:2px solid #89c3eb;") }}
+                    <h1>{{ form.search(class = "btn btn-info btn-fill pull-center") }}</h1>
+                </div>
+            </form>
+        </div>
+    </center>
+</span>
+{% endblock content %}

@@ -1,0 +1,67 @@
+{% extends "template.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="header">
+                    <h3 class="title">Model Info</h3>
+                    <p class="category">The model information about the plane</p>
+                </div>
+                <div class="content table-responsive">
+                    <table class="table table-hover table-striped" align="left|right">
+                        <tr>
+                            <td><h5>Plane ID</h5></td>
+                            <td align="right"><h5>AC {{ planename }}</h5></td>
+                        </tr>
+                        <tr>
+                            <td><h5>Model Type</h5></td>
+                            <td align="right"><h5>BOEING {{ basic_data[7] }}</h5></td>
+                        </tr>
+                        <tr>
+                            <td><h5>Age</h5></td>
+                            <td align="right"><h5>{{ basic_data[4] }} Month</h5></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="header">
+                    <h3 class="title">Aggregate</h3>
+                    <p class="category">The aggregate information about the plane</p>
+                </div>
+                <div class="content table-responsive">
+                    <table class="table table-hover table-striped">
+                        <tr>
+                            <td><h5>Total Flight Time</h5></td>
+                            <td align="right"><h5>
+                                {{ basic_data[0] }} h
+                            </h5></td>
+                        </tr>
+                        <tr>
+                            <td><h5>Total RF</h5></td>
+                            <td align="right"><h5> {{ basic_data[1] }} </h5></td>
+                        </tr>
+                        <tr>
+                            <td><h5>A Test Times</h5></td>
+                            <td align="right"><h5>{{ basic_data[2] }}</h5></td>
+                        </tr>
+                        <tr>
+                            <td><h5>C Test Times</h5></td>
+                            <td align="right"><h5> {{ basic_data[3] }} </h5></td>
+                        </tr>
+                        <tr>
+                            <td><h5>Failure Rate</h5></td>
+                            <td align="right"><h5> {{ basic_data[5] }} </h5></td>
+                        </tr>
+                        <tr>
+                            <td><h5>Utilization Rate</h5></td>
+                            <td align="right"><h5>{{ basic_data[6] }} h / Day</h5></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,41 @@
+{% extends "template.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h3 class="title">Flight Record</h3>
+                    <p class="category">The flight record of AC{{ planename }}</p>
+                </div>
+                <div class="content">
+                    <div class="table-wrapper-scroll-y">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    {% for d in col_names %}    
+                                        <td>{{ d }}</td>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for row in detail_data %}
+                                <tr>
+                                {% for d in row %}
+                                    <td>{{ d }}</td>
+                                {% endfor %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <p align="right">
+                {% if page != 1 %}
+                <a class="btn btn-outline-info mb-4" href="{{ url_for('plane_details_flight', page=page - 1, planename = planename) }}">Previous Page</a>
+                {% endif %}
+                Page {{ page }}<a class="btn btn-outline-info mb-4" href="{{ url_for('plane_details_flight', page=page + 1, planename = planename) }}">Next Page</a>
+            </p>
+        </div>
+    </div>
+{% endblock content %}

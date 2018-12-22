@@ -1,0 +1,253 @@
+{% extends "template.html" %}
+{% block content %}
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+
+                        <div class="header">
+                            <h4 class="title">Flight Time</h4>
+                            <p class="category">The distribution of flight time</p>
+                        </div>
+                        <div class="content">
+                            <div id="main1" style="width:100%;height:400px;"></div>
+                            <script type="text/javascript">
+                                // 基于准备好的dom，初始化echarts实例
+                                var myChart1 = echarts.init(document.getElementById('main1'));
+                                // 指定图表的配置项和数据
+                                var option = {
+                                                color: ['#37a2da','#32c5e9','#9fe6b8','#ffdb5c','#ff9f7f'],
+                                                tooltip : {
+                                                    trigger: 'item',
+                                                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                                                },
+                                                legend: {
+                                                    x : 'center',
+                                                    y : 'bottom',
+                                                    data:['0~10,000', '10,001~20,000', '20,001~30,000', '30,001~40,000', '40,001~50,000']
+                                                },
+                                                toolbox: {
+                                                    show : false,
+                                                    feature : {
+                                                        mark : {show: false},
+                                                        dataView : {show: false, readOnly: false},
+                                                        magicType : {
+                                                            show: false,
+                                                            type: ['pie', 'funnel']
+                                                        },
+                                                        restore : {show: false},
+                                                        saveAsImage : {show: false}
+                                                    }
+                                                },
+                                                calculable : false,
+                                                series : [
+                                                    {
+                                                        name:'Flight Time',
+                                                        type:'pie',
+                                                        radius : [30, 110],
+                                                        center : ['50%', '50%'],
+                                                        roseType : 'area',
+                                                        data:[
+                                                            {value:{{ flight_time[0] }}, name:'0~10,000'},
+                                                            {value:{{ flight_time[1] }}, name:'10,001~20,000'},
+                                                            {value:{{ flight_time[2] }}, name:'20,001~30,000'},
+                                                            {value:{{ flight_time[3] }}, name:'30,001~40,000'},
+                                                            {value:{{ flight_time[4] }}, name:'40,001~50,000'},
+                                                        ]
+                                                    }
+                                                ]
+                                            };
+
+                                // 使用刚指定的配置项和数据显示图表。
+                                myChart1.setOption(option);
+                            </script>
+
+                            <div class="footer">
+                                <div class="legend">
+                                    This is footer.
+                                </div>
+                                <hr>
+                                <div class="stats">
+                                    <i class="fa fa-clock-o"></i>Updated 2 days ago
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="content">
+                            <div class="tab">
+                              <button class="tablinks" onclick="openCity(event, 'London')" id="defaultOpen">Flight Time Ranking</button>
+                              <button class="tablinks" onclick="openCity(event, 'Paris')">Utilization Rate Ranking</button>
+                              <button class="tablinks" onclick="openCity(event, 'Tokyo')">Failure Rate Ranking</button>
+                            </div>
+
+                            <div id="London" class="tabcontent">
+                            <span onclick="this.parentElement.style.display='none'" class="topright">&times</span>
+                                <div class="content">
+                                    <div class="table-wrapper-scroll-y">
+                                        <table class="table table-hover table-striped">
+                                            <tbody>
+                                            {% for row in flight_time_rank %}
+                                                <tr>
+                                                <td> {{ row[0] }} </td>
+                                                <td>AC {{ row[1]}}</td>
+                                                <td align="right">{{ row[2] }} h </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="Paris" class="tabcontent">
+                              <span onclick="this.parentElement.style.display='none'" class="topright">&times</span>
+                                <div class="content">
+                                    <div class="table">
+                                        <table class="table table-hover table-striped">
+                                            <tbody>
+                                            {% for row in utilization_rate_rank %}
+                                                <tr>
+                                                <td>{{ row[0] }}</td>
+                                                <td>AC {{ row[2]}}</td>
+                                                <td align="right">{{ row[1] }} h / Day</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="Tokyo" class="tabcontent">
+                              <span onclick="this.parentElement.style.display='none'" class="topright">&times</span>
+                                <div class="content">
+                                    <div class="table-wrapper-scroll-y">
+                                        <table class="table table-hover table-striped">
+                                            <tbody>
+                                            {% for row in failure_rate_rank %}
+                                                <tr>
+                                                <td>{{ row[0] }}</td>
+                                                <td>AC {{ row[2]}}</td>
+                                                <td align="right">{{ row[1] }} %</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        <script>
+                        function openCity(evt, cityName) {
+                            var i, tabcontent, tablinks;
+                            tabcontent = document.getElementsByClassName("tabcontent");
+                            for (i = 0; i < tabcontent.length; i++) {
+                                tabcontent[i].style.display = "none";
+                            }
+                            tablinks = document.getElementsByClassName("tablinks");
+                            for (i = 0; i < tablinks.length; i++) {
+                                tablinks[i].className = tablinks[i].className.replace(" active", "");
+                            }
+                            document.getElementById(cityName).style.display = "block";
+                            evt.currentTarget.className += " active";
+                        }
+
+                        // Get the element with id="defaultOpen" and click on it
+                        document.getElementById("defaultOpen").click();
+                        </script>
+                            <div class="footer">
+                                <hr>
+                                <div class="stats">
+                                    <i class="fa fa-history"></i> Updated 3 minutes ago
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Warning Plane</h4>
+                            <p class="category">Planes that need maintenance</p>
+                        </div>
+                        <div class="content">
+                            {% for plane_list in warning_plane %}
+                                <p>
+                                {% for plane in plane_list %}
+                                    <a href="{{ url_for('plane_details_main', planename =  plane )}}">AC {{ plane }}</a>
+                                    <i class="fa fa-circle text-danger"></i>
+                                {% endfor %}
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Cycle Time</h4>
+                            <p class="category">The distribution of cycle time</p>
+                        </div>
+                        <div class="content">
+                            <div id="main" style="width:100%;height:400px;"></div>
+                            <script type="text/javascript">
+                                // 基于准备好的dom，初始化echarts实例
+                                var myChart2 = echarts.init(document.getElementById('main'));
+                                // 指定图表的配置项和数据
+                                var option = {
+                                                color: ['#89c3eb'],
+                                                tooltip : {
+                                                    trigger: 'axis',
+                                                    axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                                        type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                                                    }
+                                                },
+                                                grid: {
+                                                    left: '3%',
+                                                    right: '4%',
+                                                    bottom: '3%',
+                                                    containLabel: true
+                                                },
+                                                xAxis : [
+                                                    {
+                                                        type : 'category',
+                                                        data : ['1~3000', '3001~6000', '6001~9000', '9001~12000', '12001~15000', '15001~18000', '18001~21000', '21001~24000', '24001~27000', '27000~30000'],
+                                                        axisTick: {
+                                                            alignWithLabel: true
+                                                        }
+                                                    }
+                                                ],
+                                                yAxis : [
+                                                    {
+                                                        type : 'value'
+                                                    }
+                                                ],
+                                                series : [
+                                                    {
+                                                        name:'Cycle Time',
+                                                        type:'bar',
+                                                        barWidth: '60%',
+                                                        data:[{{ cycle_time[0] }},{{ cycle_time[1] }},{{ cycle_time[2] }},{{ cycle_time[3] }},{{ cycle_time[4] }},{{ cycle_time[5] }},{{ cycle_time[6] }},{{ cycle_time[7] }},{{ cycle_time[8] }}, {{ cycle_time[9] }}]
+                                                    }
+                                                ]
+                                            };
+                                    myChart2.setOption(option);
+
+                            </script>
+
+                            <div class="footer">
+                                <hr>
+                                <div class="stats">
+                                    <i class="fa fa-history"></i> Updated 3 minutes ago
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

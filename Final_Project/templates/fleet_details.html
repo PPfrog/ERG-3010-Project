@@ -1,0 +1,74 @@
+{% extends "template.html" %}
+{% block content %}
+<div class="row">
+    <h1>Boeing {{ fleetname }}</h1>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="header">
+                <h3 class="title">About</h3>
+                <p class="category">From wikipedia</p>
+            </div>
+            <div class="content">
+                <p align="left">
+                    {{ des }}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="header">
+                <h3 class="title">Fleet Summary</h3>
+                <p class="category">The basic information about the fleet</p>
+            </div>
+            <div class="content">
+                <div class="content table-responsive">
+                    <table class="table table-hover table-striped" align="left|right">
+                        <tr>
+                            <td><h5>Total Flight Time</h5></td>
+                            <td align="right"><h5>{{ fleet_data[0] }} h</h5></td>
+                        </tr>
+                        <tr>
+                            <td><h5>Average Flight Time</h5></td>
+                            <td align="right"><h5>{{ fleet_data[1] }} h</h5></td>
+                        </tr>
+                        <tr>
+                            <td><h5>Average Utilization Rate</h5></td>
+                            <td align="right"><h5>{{ fleet_data[2] }} h / Day</h5></td>
+                        </tr>
+                        <tr>
+                            <td><h5>Average Failure Rate</h5></td>
+                            <td align="right"><h5>{{ fleet_data[3] }}</h5></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card">
+            <div class="header">
+                <h3 class="title">Plane</h3>
+            </div>
+            <div class="content">
+                <p align="left">
+                    This is a Plane list in {{ fleetname }} fleet.
+                    {% for p in plane_name_list %}
+                    <p>
+                        <a href="{{url_for('plane_details_main', planename = p[0])}}">AC{{ p[0] }}</a>
+                        {% if p[1] == "TRUE" %}
+                        <i class="fa fa-circle text-success"></i>
+                        {% else %}
+                        <i class="fa fa-circle text-danger"></i>
+                        {% endif %}
+                    </p>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
